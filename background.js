@@ -14,17 +14,17 @@ function runExtension() {
   function setColor() {
     if (bmHeader) {
       chrome.storage.local.get([colorKey], (data) => {
-        bmHeader.style.backgroundColor = data[colorKey];
-        bmBadge.style.backgroundColor = data[colorKey];
-        bmHeaderLogoImage.style.filter = 'invert(50%) brightness(2)';
+        bmHeader.classList.add(data[colorKey].bg);
+        bmBadge.classList.add(data[colorKey].bg);
+        bmHeaderLogoImage.classList.add('bmcc-color-filter-cloud');
         bmHeaderIcons.forEach((icon) => {
-          icon.style.fill = '#555';
+          icon.classList.add('bmcc-color-fill-' + data[colorKey].icon);
         });
 
         if (kbdIcon) {
-          kbdIcon.style.filter = 'invert(50%) brightness(0.7)';
+          kbdIcon.classList.add('bmcc-color-filter-' + data[colorKey].icon);
         }
-
+        console.log(kbdIcon, 'bmcc-color-filter-' + data[colorKey].icon)
         console.log('color set to: ' + data[colorKey]);
         const sandboxId = window.location.hostname.split('.')[0];
         console.log(sandboxId);
@@ -36,7 +36,7 @@ function runExtension() {
     console.log('Value currently is ' + result[colorKey]);
     const colorValue = result[colorKey];
     console.log(colorValue);
-    if (colorValue && colorValue !== 'default') {
+    if (colorValue && colorValue.bg !== 'default') {
       setColor();
     }
   });

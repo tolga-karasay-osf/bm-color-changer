@@ -1,19 +1,20 @@
-const buttons = document.querySelectorAll('.bmcc-color-button');
+const buttons = document.querySelectorAll('.bmcc-button');
 
 buttons.forEach((button, index) => {
   button.addEventListener('click', async () => {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    var buttonColor = button.style.backgroundColor;
-    var resetToDefault = index === 0 ? true : false;
+    var bgColor = button.classList[0];
+    var iconColor = button.dataset.iconcolor;
+    var isResetButton = index === 0 ? true : false;
     chrome.scripting.executeScript({
-      args: [buttonColor, resetToDefault],
+      args: [bgColor, iconColor, isResetButton],
       target: { tabId: tab.id },
       function: setColor
     });
   });
 });
 
-function setColor(buttonColor, resetToDefault) {
+function setColor(bgColor, iconColor, isResetButton) {
   // if hostname does not match the pattern, exit the function
   const hostname = window.location.hostname;
   const pattern = /^[a-z]+-[0-9]+\.dx\.commercecloud\.salesforce\.com/;
@@ -30,48 +31,49 @@ function setColor(buttonColor, resetToDefault) {
     return;
   }
 
+  // define optional page element
+  const kbdIcon = document.querySelector('.kbdIcon');
+
+  // Define the function to remove previously assigned BMCC Classes
+  const removeBMCCClasses = (element) => {
+    element.classList.forEach((className) => {
+      if (className.startsWith('bmcc-color-')) {
+        element.classList.remove(className);
+      }
+    });
+  };
+
+  // Remove previously assigned BMCC Classes
+  removeBMCCClasses(bmHeader);
+  removeBMCCClasses(bmBadge);
+  removeBMCCClasses(bmHeaderLogoImage);
+  bmHeaderIcons.forEach((icon) => {
+    removeBMCCClasses(icon);
+  });
+  if (kbdIcon) {
+    removeBMCCClasses(kbdIcon);
+  }
+
   // set color for the current sandbox in local storage
   // key format: bmcc_[sandboxId]_color
   // example: bmcc_abc-123_color
   const sandboxId = hostname.split('.')[0];
   const colorKey = 'bmcc_' + sandboxId + '_color';
-  if (resetToDefault) {
-    chrome.storage.local.set({ [colorKey]: 'default' }, () => {});
-  } else {
-    chrome.storage.local.set({ [colorKey]: buttonColor }, () => {});
-  }
-
-  // set color theme for the current sandbox in the page
-  // if resetToDefault is true, set colors to default BM theme
-  // if resetToDefault is false, set colors to selected theme
-  if (resetToDefault) {
-    bmHeader.style.removeProperty('background-color');
-    bmBadge.style.backgroundColor = 'rgb(81, 79, 77)';
-    bmHeaderLogoImage.style.removeProperty('filter');
-    bmHeaderIcons.forEach((icon) => {
-      icon.style.removeProperty('fill');
-    });
-  } else {
-    bmHeader.style.backgroundColor = buttonColor;
-    bmBadge.style.backgroundColor = buttonColor;
-    bmHeaderLogoImage.style.filter = 'invert(50%) brightness(2)';
-    bmHeaderIcons.forEach((icon) => {
-      icon.style.fill = '#555';
-    });
-  }
-
-  // if optional page element is not found, exit the function
-  const kbdIcon = document.querySelector('.kbdIcon');
-  if (!kbdIcon) {
+  if (isResetButton) {
+    chrome.storage.local.set({ [colorKey]: { bg: 'default', icon: 'default' } }, () => {});
     return;
+  } else {
+    chrome.storage.local.set({ [colorKey]: { bg: bgColor, icon: iconColor } }, () => {});
   }
 
-  // set color for the optional page element in the page
-  // if resetToDefault is true, set color to default BM theme
-  // if resetToDefault is false, set color to selected theme
-  if (resetToDefault) {
-    kbdIcon.style.removeProperty('filter');
-  } else {
-    kbdIcon.style.filter = 'invert(50%) brightness(0.7)';
+  // Set color for the page
+  bmHeader.classList.add(bgColor);
+  bmBadge.classList.add(bgColor);
+  bmHeaderLogoImage.classList.add('bmcc-color-filter-cloud');
+  bmHeaderIcons.forEach((icon) => {
+    icon.classList.add('bmcc-color-fill-' + iconColor);
+  });
+  if (kbdIcon) {
+    kbdIcon.classList.add('bmcc-color-filter-' + iconColor);
   }
 }
