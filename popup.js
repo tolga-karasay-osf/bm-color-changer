@@ -1,19 +1,19 @@
-const circles = document.querySelectorAll('.color-circle');
+const buttons = document.querySelectorAll('.bmcc-color-button');
 
-circles.forEach((circle, index) => {
-  circle.addEventListener('click', async () => {
+buttons.forEach((button, index) => {
+  button.addEventListener('click', async () => {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    var circleColor = circle.style.backgroundColor;
+    var buttonColor = button.style.backgroundColor;
     var resetToDefault = index === 0 ? true : false;
     chrome.scripting.executeScript({
-      args: [circleColor, resetToDefault],
+      args: [buttonColor, resetToDefault],
       target: { tabId: tab.id },
       function: setColor
     });
   });
 });
 
-function setColor(circleColor, resetToDefault) {
+function setColor(buttonColor, resetToDefault) {
   // if hostname does not match the pattern, exit the function
   const hostname = window.location.hostname;
   const pattern = /^[a-z]+-[0-9]+\.dx\.commercecloud\.salesforce\.com/;
@@ -38,7 +38,7 @@ function setColor(circleColor, resetToDefault) {
   if (resetToDefault) {
     chrome.storage.local.set({ [colorKey]: 'default' }, () => {});
   } else {
-    chrome.storage.local.set({ [colorKey]: circleColor }, () => {});
+    chrome.storage.local.set({ [colorKey]: buttonColor }, () => {});
   }
 
   // set color theme for the current sandbox in the page
@@ -52,8 +52,8 @@ function setColor(circleColor, resetToDefault) {
       icon.style.removeProperty('fill');
     });
   } else {
-    bmHeader.style.backgroundColor = circleColor;
-    bmBadge.style.backgroundColor = circleColor;
+    bmHeader.style.backgroundColor = buttonColor;
+    bmBadge.style.backgroundColor = buttonColor;
     bmHeaderLogoImage.style.filter = 'invert(50%) brightness(2)';
     bmHeaderIcons.forEach((icon) => {
       icon.style.fill = '#555';
