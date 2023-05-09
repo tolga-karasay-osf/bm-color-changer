@@ -7,7 +7,7 @@
 }
 
 .bmcc-color-bg-1 {
-  background-image: url("reset.png");
+  background-image: url("images/reset.png");
   background-size: 50px;
   filter: invert(50%) brightness(0.7);
 }
