@@ -7,7 +7,9 @@
 }
 
 .bmcc-color-bg-1 {
-  background-color: #cecece !important;
+  background-image: url("reset.png");
+  background-size: 50px;
+  filter: invert(50%) brightness(0.7);
 }
 
 .bmcc-color-bg-2 {
@@ -63,7 +65,7 @@
 }
 
 .bmcc-color-fill-light {
-  fill: #868686 !important;
+  fill: #dcdcdc !important;
 }
 
 .bmcc-color-filter-dark {
