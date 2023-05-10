@@ -1,7 +1,84 @@
-.bmcc-color-button {
+.bmcc-button {
   width: 50px;
   height: 50px;
   border-radius: 50%;
   margin: 10px;
   cursor: pointer;
 }
+
+.bmcc-color-bg-1 {
+  background-image: url("images/reset.png");
+  background-size: 50px;
+  filter: invert(50%) brightness(0.7);
+}
+
+.bmcc-color-bg-2 {
+  background-color: #0072c6 !important;
+}
+
+.bmcc-color-bg-3 {
+  background-color: #00b7c2 !important;
+}
+
+.bmcc-color-bg-4 {
+  background-color: #00a651 !important;
+}
+
+.bmcc-color-bg-5 {
+  background-color: #f7941d !important;
+}
+
+.bmcc-color-bg-6 {
+  background-color: #ed1c24 !important;
+}
+
+.bmcc-color-bg-7 {
+  background-color: #9b26af !important;
+}
+
+.bmcc-color-bg-8 {
+  background-color: #662d91 !important;
+}
+
+.bmcc-color-bg-9 {
+  background-color: #00a99d !important;
+}
+
+.bmcc-color-bg-10 {
+  background-color: #f26522 !important;
+}
+
+.bmcc-color-bg-11 {
+  background-color: #8dc63f !important;
+}
+
+.bmcc-color-bg-12 {
+  background-color: #f1c40f !important;
+}
+
+.bmcc-color-bg-13 {
+  background-color: #7f8c8d !important;
+}
+
+.bmcc-color-fill-dark {
+  fill: #2d2d2d !important;
+}
+
+.bmcc-color-fill-light {
+  fill: #dcdcdc !important;
+}
+
+.bmcc-color-filter-dark {
+  filter : invert(50%) brightness(0.2);
+}
+
+.bmcc-color-filter-light {
+  filter : invert(50%) brightness(1.5);
+}
+
+.bmcc-color-filter-cloud {
+  filter : invert(50%) brightness(2);
+}
+
+
+

@@ -1,13 +1,20 @@
 {
   "manifest_version": 3,
-  "name": "My Extension",
-  "version": "1.0",
-  "description": "A brief description of my extension",
+  "name": "BM Color Changer",
+  "version": "1.0.0",
+  "description": "Customize BM colors",
   "background": {
     "service_worker": "background.js"
   },
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_icon": "images/icon32.png"
+  },
+  "icons": {
+    "16": "images/icon16.png",
+    "32": "images/icon32.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
   },
   "host_permissions": ["https://*.dx.commercecloud.salesforce.com/*"],
   "permissions": ["tabs", "scripting", "storage"],
