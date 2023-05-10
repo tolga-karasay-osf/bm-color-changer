@@ -1,18 +1,18 @@
 // get buttons from the popup window
 const buttons = document.querySelectorAll('.bmcc-button');
+const pattern = /^https:\/\/[a-z]+-[0-9]+\.dx\.commercecloud\.salesforce\.com\/.*/;
 
 // add click event listener to each button
 if (buttons) {
   buttons.forEach((button, index) => {
     button.addEventListener('click', async () => {
       const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-      var pattern = /^https:\/\/[a-z]+-[0-9]+\.dx\.commercecloud\.salesforce\.com\/.*/;
       if (!tab.url.match(pattern)) {
         return;
       }
-      var bgColor = button.classList[0];
-      var iconColor = button.dataset.iconcolor;
-      var isResetButton = index === 0 ? true : false;
+      const bgColor = button.classList[0];
+      const iconColor = button.dataset.iconcolor;
+      const isResetButton = index === 0 ? true : false;
       chrome.scripting.executeScript({
         args: [bgColor, iconColor, isResetButton],
         target: { tabId: tab.id },

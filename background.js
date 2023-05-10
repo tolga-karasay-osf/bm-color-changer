@@ -43,7 +43,7 @@ function runExtension() {
 }
 
 chrome.tabs.onUpdated.addListener((tabID, changeInfo, tab) => {
-  var pattern = /^https:\/\/[a-z]+-[0-9]+\.dx\.commercecloud\.salesforce\.com\/.*/;
+  const pattern = /^https:\/\/[a-z]+-[0-9]+\.dx\.commercecloud\.salesforce\.com\/.*/;
   if (!tab.url.match(pattern) || changeInfo.status === undefined) {
     return;
   }
