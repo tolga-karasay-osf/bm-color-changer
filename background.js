@@ -24,18 +24,12 @@ function runExtension() {
         if (kbdIcon) {
           kbdIcon.classList.add('bmcc-color-filter-' + data[colorKey].icon);
         }
-        console.log(kbdIcon, 'bmcc-color-filter-' + data[colorKey].icon)
-        console.log('color set to: ' + data[colorKey]);
-        const sandboxId = window.location.hostname.split('.')[0];
-        console.log(sandboxId);
       });
     }
   }
 
   chrome.storage.local.get([colorKey]).then((result) => {
-    console.log('Value currently is ' + result[colorKey]);
     const colorValue = result[colorKey];
-    console.log(colorValue);
     if (colorValue && colorValue.bg !== 'default') {
       setColor();
     }
@@ -47,8 +41,6 @@ chrome.tabs.onUpdated.addListener((tabID, changeInfo, tab) => {
   if (!tab.url.match(pattern) || changeInfo.status === undefined) {
     return;
   }
-
-  console.log('change info: ' + changeInfo.status);
   chrome.scripting.executeScript({
     target: { tabId: tabID },
     function: runExtension
