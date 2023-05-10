@@ -23,13 +23,6 @@ if (buttons) {
 }
 
 function setColor(bgColor, iconColor, isResetButton) {
-  // if hostname does not match the pattern, exit the function
-  const hostname = window.location.hostname;
-  const pattern = /^[a-z]+-[0-9]+\.dx\.commercecloud\.salesforce\.com/;
-  if (!hostname.match(pattern)) {
-    return;
-  }
-
   // if required page elements are not found, exit the function
   const bmHeader = document.querySelector('.slds-global-header');
   const bmBadge = document.querySelector('.slds-badge');
@@ -65,6 +58,7 @@ function setColor(bgColor, iconColor, isResetButton) {
   // set color for the current sandbox in local storage
   // key format: bmcc_[sandboxId]_color
   // example: bmcc_abc-123_color
+  const hostname = window.location.hostname;
   const sandboxId = hostname.split('.')[0];
   const colorKey = 'bmcc_' + sandboxId + '_color';
   if (isResetButton) {
