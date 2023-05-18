@@ -35,13 +35,22 @@ function runExtension() {
   });
 }
 
-chrome.tabs.onUpdated.addListener((tabID, changeInfo, tab) => {
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   const pattern = /^https:\/\/[a-z]+-[0-9]+\.dx\.commercecloud\.salesforce\.com\/.*/;
   if (!tab.url.match(pattern) || changeInfo.status === undefined) {
     return;
   }
-  chrome.scripting.executeScript({
-    target: { tabId: tabID },
-    function: runExtension
+
+  // Check if the tab is still active
+  chrome.tabs.get(tabId, (currentTab) => {
+    if (chrome.runtime.lastError || !currentTab || !currentTab.active) {
+      return;
+    }
+
+    // Execute the script if the tab is still active
+    chrome.scripting.executeScript({
+      target: { tabId: tabId },
+      function: runExtension
+    });
   });
 });
