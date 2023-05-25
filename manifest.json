@@ -16,11 +16,11 @@
     "48": "images/icon48.png",
     "128": "images/icon128.png"
   },
-  "host_permissions": ["https://*.dx.commercecloud.salesforce.com/*"],
+  "host_permissions": ["https://*.dx.commercecloud.salesforce.com/on/demandware.store/Sites-Site/default/*"],
   "permissions": ["tabs", "scripting", "storage"],
   "content_scripts": [
     {
-      "matches": ["https://*.dx.commercecloud.salesforce.com/*"],
+      "matches": ["https://*.dx.commercecloud.salesforce.com/on/demandware.store/Sites-Site/default/*"],
       "css": ["popup.css"],
       "js": ["popup.js"]
     }

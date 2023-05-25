@@ -36,12 +36,19 @@ function runExtension() {
 }
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  const pattern = /^https:\/\/[a-z]+-[0-9]+\.dx\.commercecloud\.salesforce\.com\/.*/;
-  if (!tab.url.match(pattern) || changeInfo.status === undefined) {
+  if(!tabId || !changeInfo || !tab){
     return;
   }
 
-  // Check if the tab is still active
+  if (changeInfo.status !== "loading" && changeInfo.status !== "complete"){
+    return;
+  }
+
+  const pattern = /^https:\/\/[a-z]+-[0-9]+\.dx\.commercecloud\.salesforce\.com\/on\/demandware\.store\/Sites-Site\/default\/.*/;
+  if (!tab.url || !tab.url.match(pattern)) {
+    return;
+  }
+
   chrome.tabs.get(tabId, (currentTab) => {
     if (chrome.runtime.lastError || !currentTab || !currentTab.active) {
       return;

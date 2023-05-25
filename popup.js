@@ -1,6 +1,6 @@
 // get buttons from the popup window
 const buttons = document.querySelectorAll('.bmcc-button');
-const pattern = /^https:\/\/[a-z]+-[0-9]+\.dx\.commercecloud\.salesforce\.com\/.*/;
+const pattern = /^https:\/\/[a-z]+-[0-9]+\.dx\.commercecloud\.salesforce\.com\/on\/demandware\.store\/Sites-Site\/default\/.*/;
 
 // add click event listener to each button
 if (buttons) {
