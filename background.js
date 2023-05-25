@@ -44,7 +44,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     return;
   }
 
-  const pattern = /^https:\/\/[a-z]+-[0-9]+\.dx\.commercecloud\.salesforce\.com\/on\/demandware\.store\/Sites-Site\/default\/.*/;
+  const pattern = /^https:\/\/[a-z]+-[0-9]+\.dx\.commercecloud\.salesforce\.com\/on\/demandware\.store\/Sites-Site.*/;
   if (!tab.url || !tab.url.match(pattern)) {
     return;
   }
