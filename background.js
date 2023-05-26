@@ -50,7 +50,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   }
 
   chrome.tabs.get(tabId, (currentTab) => {
-    if (chrome.runtime.lastError || !currentTab || !currentTab.active) {
+    if (chrome.runtime.lastError || !currentTab) {
       return;
     }
 
