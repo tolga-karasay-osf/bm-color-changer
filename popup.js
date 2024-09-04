@@ -143,8 +143,14 @@ function runExtension(){
   if (!window.location.href.match(pattern)) {
     return;
   }
+  // Set initial color on page load
   setInitialColor();
-  setInterval(keepSessionAlive, 14 * 60 * 1000);
+
+  // Keep session alive every 14 minutes if modern UI is enabled
+  const isModernUI = document.querySelector('ccbm.ldsbm');
+  if (isModernUI) {
+    setInterval(keepSessionAlive, 14 * 60 * 1000);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
