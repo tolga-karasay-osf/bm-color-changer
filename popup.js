@@ -27,7 +27,11 @@ function setColor(bgColor, iconColor, isResetButton) {
   const bmHeader = document.querySelector('.slds-global-header') || document.querySelector('.slds-template_app');
   const bmBadge = document.querySelector('.slds-badge');
   const bmHeaderLogoImage = document.querySelector('.header__logo-image');
-  const bmHeaderIcons = document.querySelectorAll('.slds-icon_small');
+  let bmHeaderIcons = document.querySelectorAll('.slds-icon_small');
+  if (bmHeaderIcons.length === 0) {
+    bmHeaderIcons = document.querySelectorAll('.slds-button_icon-small');
+  }
+
   if (!bmHeader || !bmBadge || !bmHeaderLogoImage || !bmHeaderIcons) {
     return;
   }

@@ -61,11 +61,13 @@
 }
 
 .bmcc-color-fill-dark {
-  fill: #2d2d2d !important;
+  fill: #2d2d2d !important; /* For classic UI */
+  color: #2d2d2d !important; /* For modern UI */
 }
 
 .bmcc-color-fill-light {
-  fill: #dcdcdc !important;
+  fill: #dcdcdc !important; /* For classic UI */
+  color: #dcdcdc !important; /* For modern UI */
 }
 
 .bmcc-color-filter-dark {
