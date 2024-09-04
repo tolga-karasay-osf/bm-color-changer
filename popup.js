@@ -130,11 +130,11 @@ function keepSessionAlive() {
     })
     .then(response => {
       if (!response.ok) {
-        console.error('Failed to keep session alive:', response.statusText);
+        console.log('Failed to keep session alive');
       }
     })
     .catch(error => {
-      console.error('Error keeping session alive:', error);
+      console.log('Error keeping session alive:', error);
     });
   }
 }
