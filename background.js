@@ -1,6 +1,6 @@
 function runExtension() {
   // if required page elements are not found, exit the function
-  const bmHeader = document.querySelector('.slds-global-header');
+  const bmHeader = document.querySelector('.slds-global-header') || document.querySelector('.slds-template_app');
   const bmBadge = document.querySelector('.slds-badge');
   const bmHeaderLogoImage = document.querySelector('.header__logo-image');
   const bmHeaderIcons = document.querySelectorAll('.slds-icon_small');

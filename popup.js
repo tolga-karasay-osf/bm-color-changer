@@ -24,7 +24,7 @@ if (buttons) {
 
 function setColor(bgColor, iconColor, isResetButton) {
   // if required page elements are not found, exit the function
-  const bmHeader = document.querySelector('.slds-global-header');
+  const bmHeader = document.querySelector('.slds-global-header') || document.querySelector('.slds-template_app');
   const bmBadge = document.querySelector('.slds-badge');
   const bmHeaderLogoImage = document.querySelector('.header__logo-image');
   const bmHeaderIcons = document.querySelectorAll('.slds-icon_small');
@@ -79,3 +79,27 @@ function setColor(bgColor, iconColor, isResetButton) {
     kbdIcon.classList.add('bmcc-color-filter-' + iconColor);
   }
 }
+
+// Function to send GET request to keep the session alive
+function keepSessionAlive() {
+  if (window.location.href.match(pattern)) {
+    fetch(window.location.href, {
+      method: 'GET',
+      credentials: 'include' // Include cookies for the request
+    })
+    .then(response => {
+      if (!response.ok) {
+        console.error('Failed to keep session alive:', response.statusText);
+      }
+    })
+    .catch(error => {
+      console.error('Error keeping session alive:', error);
+    });
+  }
+}
+
+// Call keepSessionAlive every 14 minutes
+setInterval(keepSessionAlive, 14 * 60 * 1000);
+
+// Initial call to keepSessionAlive to start the interval immediately
+keepSessionAlive();
