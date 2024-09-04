@@ -1,28 +1,14 @@
-// get buttons from the popup window
-const buttons = document.querySelectorAll('.bmcc-button');
 const pattern = /^https:\/\/[a-z]+-[0-9]+\.dx\.commercecloud\.salesforce\.com\/on\/demandware\.store\/Sites-Site.*/;
 
-// add click event listener to each button
-if (buttons) {
-  buttons.forEach((button, index) => {
-    button.addEventListener('click', async () => {
-      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-      if (!tab.url.match(pattern)) {
-        return;
-      }
-      const bgColor = button.classList[0];
-      const iconColor = button.dataset.iconcolor;
-      const isResetButton = index === 0 ? true : false;
-      chrome.scripting.executeScript({
-        args: [bgColor, iconColor, isResetButton],
-        target: { tabId: tab.id },
-        function: setColor
-      });
-    });
+function removeBMCCClasses(element) {
+  element.classList.forEach((className) => {
+    if (className.startsWith('bmcc-color-')) {
+      element.classList.remove(className);
+    }
   });
-}
+};
 
-function setColor(bgColor, iconColor, isResetButton) {
+function setColorOnSelection(bgColor, iconColor, isResetButton) {
   // if required page elements are not found, exit the function
   const bmHeader = document.querySelector('.slds-global-header') || document.querySelector('.slds-template_app');
   const bmBadge = document.querySelector('.slds-badge');
@@ -38,15 +24,6 @@ function setColor(bgColor, iconColor, isResetButton) {
 
   // define optional page element
   const kbdIcon = document.querySelector('.kbdIcon');
-
-  // Define the function to remove previously assigned BMCC Classes
-  const removeBMCCClasses = (element) => {
-    element.classList.forEach((className) => {
-      if (className.startsWith('bmcc-color-')) {
-        element.classList.remove(className);
-      }
-    });
-  };
 
   // Remove previously assigned BMCC Classes
   removeBMCCClasses(bmHeader);
@@ -84,6 +61,66 @@ function setColor(bgColor, iconColor, isResetButton) {
   }
 }
 
+function initializeColorSelectionButtonsInPopup() {
+  // get buttons from the popup window
+  const buttons = document.querySelectorAll('.bmcc-button');
+  // add click event listener to each button
+  if (buttons) {
+    buttons.forEach((button, index) => {
+      button.addEventListener('click', async () => {
+        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+        if (!tab.url.match(pattern)) {
+          return;
+        }
+        const bgColor = button.classList[0];
+        const iconColor = button.dataset.iconcolor;
+        const isResetButton = index === 0 ? true : false;
+        chrome.scripting.executeScript({
+          args: [bgColor, iconColor, isResetButton],
+          target: { tabId: tab.id },
+          function: setColorOnSelection
+        });
+      });
+    });
+  }
+}
+
+function setInitialColor() {
+  // if required page elements are not found, exit the function
+  const bmHeader = document.querySelector('.slds-global-header') || document.querySelector('.slds-template_app');
+  const bmBadge = document.querySelector('.slds-badge');
+  const bmHeaderLogoImage = document.querySelector('.header__logo-image');
+  let bmHeaderIcons = document.querySelectorAll('.slds-icon_small');
+  if (bmHeaderIcons.length === 0) {
+    bmHeaderIcons = document.querySelectorAll('.slds-button_icon-small');
+  }
+  if (!bmHeader || !bmBadge || !bmHeaderLogoImage || bmHeaderIcons.length === 0) {
+    return;
+  }
+  // define optional page element
+  const kbdIcon = document.querySelector('.kbdIcon');
+
+  // get sandbox ID from URL and define color key
+  const sandboxId = window.location.hostname.split('.')[0];
+  const colorKey = 'bmcc_' + sandboxId + '_color';
+
+  // get colorValue from local storage and run addColorClasses function
+  chrome.storage.local.get([colorKey]).then((result) => {
+    const colorValue = result[colorKey];
+    if (colorValue && colorValue.bg !== 'default') {
+      bmHeader.classList.add(colorValue.bg);
+      bmBadge.classList.add(colorValue.bg);
+      bmHeaderLogoImage.classList.add('bmcc-color-filter-cloud');
+      bmHeaderIcons.forEach((icon) => {
+        icon.classList.add('bmcc-color-fill-' + colorValue.icon);
+      });
+      if (kbdIcon) {
+        kbdIcon.classList.add('bmcc-color-filter-' + colorValue.icon);
+      }
+    }
+  });
+}
+
 // Function to send GET request to keep the session alive
 function keepSessionAlive() {
   if (window.location.href.match(pattern)) {
@@ -102,8 +139,16 @@ function keepSessionAlive() {
   }
 }
 
-// Call keepSessionAlive every 14 minutes
-setInterval(keepSessionAlive, 14 * 60 * 1000);
+function runExtension(){
+  if (!window.location.href.match(pattern)) {
+    return;
+  }
+  setInitialColor();
+  setInterval(keepSessionAlive, 14 * 60 * 1000);
+}
 
-// Initial call to keepSessionAlive to start the interval immediately
-keepSessionAlive();
+document.addEventListener('DOMContentLoaded', () => {
+  initializeColorSelectionButtonsInPopup();
+});
+
+runExtension();

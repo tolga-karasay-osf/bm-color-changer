@@ -1,11 +1,8 @@
 {
   "manifest_version": 3,
   "name": "BM Color Changer",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Customize BM colors",
-  "background": {
-    "service_worker": "background.js"
-  },
   "action": {
     "default_popup": "popup.html",
     "default_icon": "images/icon32.png"
